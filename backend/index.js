@@ -20,13 +20,16 @@ connectDB()
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
-// app.use(cors({origin: allowedOrigin, credentials: true}))
 // const allowedOrigins = ["https://authentication-frontend-2ygj.onrender.com"]
 
 app.use(cors({
     origin: "https://authentication-frontend-2ygj.onrender.com",
-    credentials: true
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
   }));
+
+
 
 app.use(cookieParser())
 
