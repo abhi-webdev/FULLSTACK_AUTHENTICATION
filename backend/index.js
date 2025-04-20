@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 8000
 connectDB()
 
 
-const allowedOrigin = ["http://localhost:5173"]
+const allowedOrigin = ["https://authentication-ref4.onrender.com"]
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
