@@ -21,18 +21,12 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 // app.use(cors({origin: allowedOrigin, credentials: true}))
-const allowedOrigins = ["https://authentication-frontend-2ygj.onrender.com"]
+// const allowedOrigins = ["https://authentication-frontend-2ygj.onrender.com"]
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true)
-    } else {
-      callback(new Error("Not allowed by CORS"))
-    }
-  },
-  credentials: true
-}))
+    origin: "https://authentication-frontend-2ygj.onrender.com",
+    credentials: true
+  }));
 
 app.use(cookieParser())
 
