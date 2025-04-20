@@ -3,6 +3,12 @@
 
 # Env files
 **/.env
+Frontend/.env
+backend/.env
+frontend/.env.local
+frontend/.env.*.local
+backend/.env.local
+backend/.env.*.local
 
 # Logs
 **/npm-debug.log
