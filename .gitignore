@@ -2,7 +2,7 @@
 **/node_modules/
 
 # Env files
-**/.env
+# **/.env
 backend/.env
 backend/.env.local
 backend/.env.*.local
