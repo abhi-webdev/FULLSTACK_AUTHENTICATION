@@ -39,6 +39,7 @@ export const register = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      profilePic: `https://api.dicebear.com/7.x/fun-emoji/svg?seed=${name}`
     });
 
     // new usercreate kiya hua user ko save methods se save karo  database me
@@ -147,6 +148,67 @@ export const login = async (req, res) => {
     });
   }
 };
+
+export const googleLogin = async (req, res) => {
+  const { email, name, profilePic } = req.body;
+
+  if (!email || !name || !profilePic) {
+    return res.status(400).json({
+      success: false,
+      message: "Missing required fields",
+    });
+  }
+
+  try {
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = await User.create({
+        name,
+        email,
+        profilePic,
+        password: "GOOGLE_AUTH", // dummy placeholder
+        isVerified: true,   // Google emails are verified
+      }
+    );
+    await user.save();
+    }
+
+    // console.log(user);
+    
+
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: "7d" }
+    );
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+     res.status(200).json({
+      success: true,
+      message: "User LoggedIn with Google",
+      user:{
+        name: user.name,
+        email: user.email,
+        profilePic: user.profilePic,
+      }
+    });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 
 export const logout = async (req, res) => {
   try {

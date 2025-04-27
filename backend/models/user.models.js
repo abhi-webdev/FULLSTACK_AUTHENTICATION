@@ -36,6 +36,13 @@ const userSchema = new mongoose.Schema({
     resetOTPExpireAt: {
         type: Number,
         default: 0
+    },
+    profilePic: {
+        type: String,
+        // required: true
+    },
+    phoneNo: {
+        type: String,
     }
 })
 

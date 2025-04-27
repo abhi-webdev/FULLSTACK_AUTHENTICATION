@@ -6,6 +6,10 @@ import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+
+import {auth, provider} from "../utils/firebase"
+import { signInWithPopup } from 'firebase/auth'
+
 const Login = () => {
   const navigate = useNavigate();
   const { backendUrl, setIsLoggedIn, getUserData } = useContext(AppContext);
@@ -52,6 +56,47 @@ const Login = () => {
     } catch (error) {
       // toast.error(error.response?.data?.message || "Something went wrong");
       toast.error(error.message);
+    }
+  };
+
+
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      
+
+
+      let profilePicUrl = user.photoURL;
+      if (profilePicUrl && !profilePicUrl.includes("=s")) {
+        profilePicUrl += "=s256-c"; // You can set =s96-c, s128-c, or s256-c based on the quality you want
+      }
+  
+      // You can send user info to your backend here (optional)
+      const userData = {
+        name: user.displayName,
+        email: user.email,
+        profilePic: profilePicUrl,
+        phoneNo: user.phoneNumber,
+      };
+      
+      console.log(userData);
+      
+      const response = await axios.post(backendUrl + "/api/auth/google-login", userData, {
+        withCredentials: true,
+      });
+      
+      if (response.data.success) {
+        setIsLoggedIn(true);
+        getUserData(response.data.user);
+        navigate("/");
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error("Google sign-in failed");
+      console.error(error);
     }
   };
 
@@ -122,6 +167,17 @@ const Login = () => {
           </button>
         </form>
 
+
+          {/* Google Sign In Button */}
+        <button
+          onClick={handleGoogleSignIn}
+          className="w-full py-2.5 mt-4 rounded-full bg-white text-slate-900 font-medium flex items-center justify-center gap-2"
+        >
+          <img src={assets.google} alt="Google Icon" className="w-5 h-5" />
+          Continue with Google
+        </button>
+
+
         {state === "Sign Up" ? (
           <p className="text-gray-400 text-center text-xs mt-4">
             Already have an account?{" "}
@@ -143,6 +199,7 @@ const Login = () => {
             </span>
           </p>
         )}
+        
       </div>
     </div>
   );

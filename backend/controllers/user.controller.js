@@ -18,7 +18,8 @@ export const getUserData = async(req, res) => {
             success: true,
             userData: {
                 name: user.name,
-                isVerified: user.isVerified
+                isVerified: user.isVerified,
+                profilePic: user.profilePic || "",
             }
         })
 

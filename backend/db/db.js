@@ -9,7 +9,6 @@ const connectDB = async () => {
         console.log("Error Connectio n to DB");
         
     }
-    
 
 }
 
