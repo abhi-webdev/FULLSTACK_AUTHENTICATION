@@ -18,8 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 
 
 const allowedOrigins = [
-  // "https://authentication-frontend-2yqj.onrender.com",
-  "http://localhost:5173"
+  "https://authentication-frontend-2yqj.onrender.com",
+  "https://authentication-ref4.onrender.com"
 ];
 
 app.use(
